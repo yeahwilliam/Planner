@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Home{% endblock %}</h1>
+  {% if g.user %}
+      {% if planners|length < 4 %}
+        <a class="action" href="{{ url_for('planner.new_planner') }}">New Planner</a>
+      {% else %}
+        <p>Limited with 4 planners</p>
+      {% endif %}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+    <h1>Planners</h1>
+    {% if planners|length %}
+        {% for p in planners %}
+            <article class="post">
+              <header>
+                <div>
+                    <h1>
+                        <a href="{{ url_for('planner_item.myplanner', p_id=p['planner_id']) }}">{{ p['planner_name'] }}</a>
+                    </h1>
+                </div>
+                {% if g.user['user_id'] == p['user_id'] %}
+                    <a class="action" href="{{ url_for('planner.update_planner', id=p['planner_id']) }}">Edit</a>
+                {% endif %}
+              </header>
+
+            </article>
+        {% endfor %}
+    {% else %}
+        <article class="post">
+          <header>
+            <div>
+              <h1>No Planners found.</h1>
+            </div>
+          </header>
+        </article>
+    {% endif %}
+    <hr>
+    </article>
+{% endblock %}

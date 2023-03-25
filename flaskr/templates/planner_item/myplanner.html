@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}{{ planner['planner_name'] }}{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('planner.list_planners') }}">Home</a>
+    <a class="action" href="{{ url_for('planner_item.create_task', p_id=planner['planner_id']) }}">New Tasks</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if planner_items|length %}
+        {% for item in planner_items %}
+            <article class="post">
+              <header>
+                <div>
+                  <h1>{{ item['title'] }}</h1>
+                  <div class="about">by {{ g.user['username'] }}</div>
+                </div>
+                {% if g.user['planner_id'] == item['planner_id'] %}
+                    <a class="action" href="{{ url_for('planner_item.update_task', p_id=planner['planner_id'], id=item['planner_item_id']) }}">Edit</a>
+                {% endif %}
+              </header>
+              <p class="blog">Notes: {{ item['notes'] }}</p>
+
+              {% if item['is_done'] == 0 %}
+                    <p class="blog">Is done? False</p>
+              {% endif %}
+              {% if item['is_done'] == 1 %}
+                    <p class="blog">Is done? True</p>
+              {% endif %}
+
+              <p class="blog">Due Date: {{ item['due_date'] }}</p>
+            </article>
+            {% if not loop.last %}
+              <hr>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <article class="post">
+          <header>
+            <div>
+              <h1>No tasks found.</h1>
+            </div>
+          </header>
+        </article>
+    {% endif %}
+{% endblock %}

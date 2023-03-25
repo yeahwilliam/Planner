@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Edit "{{ planner_item['title'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        <label for="title">Title</label>
+        <input name="title" id="title" value="{{ planner_item['title'] }}" required>
+        <label for="due_date">Due Date</label>
+        <input name="due_date" id="due_date" type="datetime-local" value="{{ planner_item['due_date'] }}" required>
+        <div>
+            <label for="is_done">Is done?</label>
+            {% if planner_item['is_done'] == 0 %}
+                <label for="true">Yes:</label><input name="is_done" id="is_done" type="radio"  value="1" >
+                <label for="false">No: </label><input name="is_done" id="is_done" type="radio"  value="0" checked="checked">
+            {% endif %}
+            {% if planner_item['is_done'] == 1 %}
+                <label for="true">Yes:</label><input name="is_done" id="is_done" type="radio"  value="1" checked="checked">
+                <label for="false">No: </label><input name="is_done" id="is_done" type="radio"  value="0" >
+            {% endif %}
+        </div>
+        <label for="notes">Notes</label>
+        <textarea name="notes" id="notes">{{ planner_item['notes'] }}</textarea>
+        <div>
+            <input type="submit" value="Save">
+            <a class="action" href="{{ url_for('planner_item.myplanner', p_id=planner['planner_id']) }}">Cancel</a>
+        </div>
+    </form>
+    <hr>
+    <form action="{{ url_for('planner_item.delete_task', p_id=planner['planner_id'], id=planner_item['planner_item_id']) }}" method="post">
+        <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+    </form>
+{% endblock %}

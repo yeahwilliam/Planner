@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Edit "{{ planner['planner_name'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+    <label for="planner_name">Planner Name</label>
+    <input name="planner_name" id="planner_name" value="{{ planner['planner_name'] }}" required>
+    <div>
+        <input type="submit" value="Save">
+        <a class="action" href="{{ url_for('planner.list_planners') }}">Cancel</a>
+    </div>
+    </form>
+    <hr>
+    <form action="{{ url_for('planner.remove_planner', id=planner['planner_id']) }}" method="post">
+        <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+    </form>
+{% endblock %}

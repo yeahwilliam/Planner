@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}New Task{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="title">Title</label>
+    <input name="title" id="title" value="{{ request.form['title'] }}" required>
+    <label for="due_date">Due Date</label>
+    <input name="due_date" id="due_date" type="datetime-local" value="{{ request.form['due_date'] }}" required>
+    <div>
+      <label for="is_done">Is done?</label>
+      <label for="true">Yes:</label><input name="is_done" id="is_done" type="radio"  value="1" >
+      <label for="false">No: </label><input name="is_done" id="is_done" type="radio"  value="0" checked="checked">
+    </div>
+    <label for="notes">Notes</label>
+    <textarea name="notes" id="notes">{{ request.form['notes'] }}</textarea>
+    <div>
+        <input type="submit" value="Save">
+        <a class="action" href="{{ url_for('planner_item.myplanner', p_id=planner['planner_id']) }}">Cancel</a>
+    </div>
+  </form>
+{% endblock %}
